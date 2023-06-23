@@ -14,9 +14,9 @@ app.get('/random', (req, res) =>{
 })
 
 
-app.get('/search/:string', (req, res) =>{
+app.get('/search/:countryName', (req, res) =>{
 
-    let country_By_Name = req.params.string.toLocaleLowerCase()
+    let country_By_Name = req.params.countryName.toLocaleLowerCase()
     const matched_country = countries.find(country => country_By_Name === country.countryName.toLocaleLowerCase())
     matched_country ? res.send(matched_country) : res.status(404).end('Not found');
 })
