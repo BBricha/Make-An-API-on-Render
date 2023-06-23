@@ -1,0 +1,38 @@
+const express = require('express');
+const Port = 4001;
+const app = express();
+
+let countries = [ { countryName: "United States", capital: "Washington, D.C.", population: 331000000, language: "English", currency: "United States Dollar ($)", img: "" }, { countryName: "Canada", capital: "Ottawa", population: 37590000, language: "English, French", currency: "Canadian Dollar ($)", img: "" }, { countryName: "Germany", capital: "Berlin", population: 83190556, language: "German", currency: "Euro (€)", img: "" }, { countryName: "Japan", capital: "Tokyo", population: 126010000, language: "Japanese", currency: "Japanese Yen (¥)", img: "" }, { countryName: "Brazil", capital: "Brasília", population: 211049527, language: "Portuguese", currency: "Brazilian Real (R$)", img: "" }, { countryName: "Australia", capital: "Canberra", population: 25687041, language: "English", currency: "Australian Dollar ($)", img: "" }, { countryName: "France", capital: "Paris", population: 67060000, language: "French", currency: "Euro (€)", img: "" }, { countryName: "China", capital: "Beijing", population: 1444216107, language: "Chinese", currency: "Renminbi (¥)", img: "" }, { countryName: "India", capital: "New Delhi", population: 1393409038, language: "Hindi, English", currency: "Indian Rupee (₹)", img: "" }, { countryName: "Russia", capital: "Moscow", population: 145912025, language: "Russian", currency: "Russian Ruble (₽)", img: "" }, { countryName: "Mexico", capital: "Mexico City", population: 126190788, language: "Spanish", currency: "Mexican Peso ($)", img: "" }, { countryName: "United Kingdom", capital: "London", population: 66435600, language: "English", currency: "British Pound (£)", img: "" }, { countryName: "South Africa", capital: "Pretoria, Cape Town, Bloemfontein", population: 58775022, language: "Zulu, Xhosa, Afrikaans, English", currency: "South African Rand (R)", img: "" }, { countryName: "Saudi Arabia", capital: "Riyadh", population: 34813867, language: "Arabic", currency: "Saudi Riyal (ر.س)", img: "" }, { countryName: "Argentina", capital: "Buenos Aires", population: 44938712, language: "Spanish", currency: "Argentine Peso ($)", img: "" } ]
+
+app.get('/', (req, res) =>{
+    res.send(countries)
+})
+
+app.get('/random', (req, res) =>{ 
+    let randomNumber = Math.floor(countries.length * Math.random())
+    res.send(countries[randomNumber])
+})
+
+
+app.get('/search/:string', (req, res) =>{
+
+    let country_By_Name = req.params.string.toLocaleLowerCase()
+    const matched_country = countries.find(country => country_By_Name === country.countryName.toLocaleLowerCase())
+    matched_country ? res.send(matched_country) : res.status(404).end('Not found');
+})
+
+
+
+app.get('/countryandcapital', (req, res) => {
+    const countryAndCapital = countries.map(country => ({
+      countryName: country.countryName,
+      capital: country.capital
+    }));
+    res.send(countryAndCapital);
+  });
+  
+
+
+app.listen(Port, () =>{
+    console.log(`runing on port ${Port}`);
+})
